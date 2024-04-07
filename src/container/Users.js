@@ -1,18 +1,23 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 function Users() {
-    const [users, setUsers] = useState([
-        { name: 'Mohan', age: 25 },
-        { name: 'Sohan', age: 26 }
-    ]);
+    const [users, setUsers] = useState([]);
+
+    useEffect(() => {
+        fetch('https://jsonplaceholder.typicode.com/users')
+            .then(response => response.json())
+            .then(data => {
+                setUsers(data);
+            });
+    }, []); // Empty dependency array to run effect only once
 
     return (
         <div>
             <h2>Users</h2>
             <ul>
-                {users.map((user, index) => {
-                    return <li key={index}>{user.name}, {user.age}</li>;
-                })}
+                {users.map((user, index) => (
+                    <li key={index}>{user.name}, {user.email}</li>
+                ))}
             </ul>
         </div>
     );
